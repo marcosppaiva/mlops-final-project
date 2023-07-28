@@ -8,7 +8,8 @@ disable = [
     "invalid-name",
     "too-few-public-methods",
     "anomalous-backslash-in-string",
-    "f-string-without-interpolation"
+    "f-string-without-interpolation",
+    "logging-fstring-interpolation"
 ]
 
 [tool.pylint.MASTER]
