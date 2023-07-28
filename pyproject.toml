@@ -9,7 +9,8 @@ disable = [
     "too-few-public-methods",
     "anomalous-backslash-in-string",
     "f-string-without-interpolation",
-    "logging-fstring-interpolation"
+    "logging-fstring-interpolation",
+    "import-error"
 ]
 
 [tool.pylint.MASTER]
