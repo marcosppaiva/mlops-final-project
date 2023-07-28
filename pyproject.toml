@@ -8,8 +8,11 @@ disable = [
     "invalid-name",
     "too-few-public-methods",
     "anomalous-backslash-in-string",
-    "logging-fstring-interpolation"
+    "f-string-without-interpolation"
 ]
+
+[tool.pylint.MASTER]
+init-hook='import sys; sys.path.append(".")'
 
 [tool.black]
 line-length = 88
