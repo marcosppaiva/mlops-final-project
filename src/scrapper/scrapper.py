@@ -1,4 +1,4 @@
-from enum import Enum, auto
+import logging
 from datetime import date
 
 import pandas as pd
@@ -6,20 +6,15 @@ import requests
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 from prefect import flow, task
+from botocore.exceptions import ParamValidationError
 
+from utils import bucket_utils
+from entities.enums import Condition, ResidenceType
 
-class ResidenceType(Enum):
-    MORADIA = (auto(),)
-    APARTAMENTO = auto()
-
-
-class Condition(Enum):
-    RUINA = "Ruína"
-    NOVO = "Novo"
-    RENOVADO = "Renovado"
-    USADO = "Usado"
-    EM_CONSTRUCAO = "Em construção"
-    PARA_RECUPERAR = "Para recuperar"
+logging.basicConfig(
+    level=logging.INFO,
+    format='SCRAPPER_APP - %(asctime)s - %(levelname)s - %(message)s',
+)
 
 
 def get_regions():
@@ -96,6 +91,7 @@ def get_attribute_safe(element, name, attribute, default="NA"):
         return default
 
 
+@task
 def get_infos(soup):
     list_ads = soup.find_all("article")
     ads = []
@@ -131,6 +127,7 @@ def get_infos(soup):
     return ads
 
 
+@task
 def detail_extract(data_frame: pd.DataFrame):
 
     data_frame.loc[
@@ -152,8 +149,15 @@ def detail_extract(data_frame: pd.DataFrame):
     return data_frame
 
 
-def save_data(df):
-    df.to_parquet(f"data/raw/imovirtual_{date.today()}.parquet")
+@task(retries=2, retry_delay_seconds=2)
+def save_data(df: pd.DataFrame, on_cloud=True):
+    filename = f"data/raw/imovirtual.parquet"
+    df.to_parquet(filename)
+    if on_cloud:
+        try:
+            bucket_utils.upload_file(filename, filename)
+        except ParamValidationError as error:
+            logging.error(f'Error to save file on cloud: {error}')
 
 
 @flow()
