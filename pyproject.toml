@@ -7,7 +7,8 @@ disable = [
     "missing-module-docstring",
     "invalid-name",
     "too-few-public-methods",
-    "anomalous-backslash-in-string"
+    "anomalous-backslash-in-string",
+    "logging-fstring-interpolation"
 ]
 
 [tool.black]
