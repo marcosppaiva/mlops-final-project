@@ -11,7 +11,8 @@ disable = [
     "f-string-without-interpolation",
     "logging-fstring-interpolation",
     "import-error",
-    "ungrouped-imports"
+    "ungrouped-imports",
+    "no-name-in-module"
 ]
 
 [tool.pylint.MASTER]
