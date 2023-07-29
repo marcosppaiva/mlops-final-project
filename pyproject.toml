@@ -10,7 +10,8 @@ disable = [
     "anomalous-backslash-in-string",
     "f-string-without-interpolation",
     "logging-fstring-interpolation",
-    "import-error"
+    "import-error",
+    "ungrouped-imports"
 ]
 
 [tool.pylint.MASTER]
