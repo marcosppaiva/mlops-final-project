@@ -238,8 +238,8 @@ def register_best_model():
     )
 
     if latest_prod_version:
-        prod_model = latest_prod_version[0]
-        prod_rmse = prod_model.run.data.metrics['rmse']
+        prod_model = client.get_run(latest_prod_version[0].run_id)
+        prod_rmse = prod_model.data.metrics['rmse']
 
         if best_model_rmse < prod_rmse:
             stage = 'Production'
