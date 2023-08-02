@@ -5,6 +5,7 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
+from dotenv import load_dotenv
 from prefect import flow, task
 from boto3.exceptions import S3UploadFailedError
 from botocore.exceptions import ParamValidationError
@@ -12,7 +13,9 @@ from sklearn.model_selection import train_test_split
 
 from utils import bucket_utils
 
-DATA_RAW_PATH = 'data/raw/imovirtual.parquet'
+load_dotenv()
+
+RAW_DATA_PATH = os.getenv('RAW_DATA_PATH', '/raw/imovirtdataual.parquet')
 DATA_PROCESSED_PATH = 'data/processed/'
 
 logging.basicConfig(
@@ -89,7 +92,7 @@ def save_data_split(data_frame: pd.DataFrame, data_path: str, on_cloud=True) -> 
 def preprocessor_flow():
 
     # filename = get_last_data(os.path.join(DATA_RAW_PATH, '*'))
-    data_frame = read_data(DATA_RAW_PATH)
+    data_frame = read_data(RAW_DATA_PATH)
 
     data_frame = clean_and_settypes(data_frame)
 

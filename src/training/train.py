@@ -41,7 +41,6 @@ def read_data(filename: str) -> pd.DataFrame:
     Returns:
         Tuple[pd.DataFrame, pd.Series]: Dataframe with data and pd.Series with target
     """
-    print('>>>>>>>', filename)
     data_frame = pd.read_parquet(filename)
 
     data_frame['property_ads'] = data_frame.company.apply(

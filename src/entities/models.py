@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .enums import Condition, ResidenceType
+from .enums import Condition, EnergyCertify, ResidenceType
 
 
 class Imovel(BaseModel):
@@ -9,5 +9,5 @@ class Imovel(BaseModel):
     bathroom: int
     metric: float
     room: int
-    energy_certify: str
+    energy_certify: EnergyCertify
     condition: Condition
