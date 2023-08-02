@@ -11,7 +11,7 @@ from mlflow.pyfunc import PyFuncModel
 from sklearn.compose import ColumnTransformer
 from scipy.sparse._csr import csr_matrix
 
-from entities.models import Imovel
+from src.entities.models import Imovel
 
 from .bucket_utils import download_obj
 
