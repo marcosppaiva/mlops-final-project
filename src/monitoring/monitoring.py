@@ -7,20 +7,22 @@ from dotenv import load_dotenv
 from prefect import flow, task
 from evidently import ColumnMapping
 from evidently.report import Report
+# fmt: off
 from evidently.metrics import (
     DataDriftTable,
     ColumnDriftMetric,
     DatasetDriftMetric,
-    DatasetMissingValuesMetric,
+    DatasetMissingValuesMetric
 )
 
 from src.utils.predictions_utils import (
     load_model,
     prepare_data,
     save_metrics,
-    load_predictions,
+    load_predictions
 )
 
+# fmt: on
 load_dotenv()
 
 REF_DATA_PATH = os.getenv('VAL_DATA_PATH', 'data/processed/val.parquet')
@@ -29,7 +31,6 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s [%(levelname)s]: %(message)s"
 )
 
-model, preprocessor, run_id = load_model()
 
 numerical_columns = ['metric', 'rooms', 'bathroom']
 categorical_columns = ['energy_certify', 'property_type', 'district', 'condition']
@@ -56,6 +57,8 @@ def get_ref_data(filename: str = REF_DATA_PATH):
 
 @task
 def prep_ref_data(df_ref: pd.DataFrame):
+    model, preprocessor, _ = load_model()
+
     data_transformed, _ = prepare_data(df_ref, preprocessor)
 
     pred_prices = model.predict(data_transformed)
@@ -66,7 +69,6 @@ def prep_ref_data(df_ref: pd.DataFrame):
 
 
 def get_column_mapping() -> ColumnMapping:
-
     column_mapping = ColumnMapping()
     column_mapping.target = None
     column_mapping.prediction = 'price_predicted'
