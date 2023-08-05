@@ -11,7 +11,7 @@ from boto3.exceptions import S3UploadFailedError
 from botocore.exceptions import ParamValidationError
 from sklearn.model_selection import train_test_split
 
-from utils import bucket_utils
+from src.utils import bucket_utils
 
 load_dotenv()
 
@@ -90,7 +90,6 @@ def save_data_split(data_frame: pd.DataFrame, data_path: str, on_cloud=True) -> 
 
 @flow
 def preprocessor_flow():
-
     # filename = get_last_data(os.path.join(DATA_RAW_PATH, '*'))
     data_frame = read_data(RAW_DATA_PATH)
 
@@ -137,5 +136,4 @@ def preprocessor_flow():
 
 
 if __name__ == '__main__':
-
     preprocessor_flow()
