@@ -8,8 +8,8 @@ from tqdm import tqdm
 from prefect import flow, task
 from botocore.exceptions import ParamValidationError
 
-from utils import bucket_utils
-from entities.enums import Condition, ResidenceType
+from src.utils import bucket_utils
+from src.entities.enums import Condition, ResidenceType
 
 logging.basicConfig(
     level=logging.INFO,
@@ -129,7 +129,6 @@ def get_infos(soup):
 
 @task
 def detail_extract(data_frame: pd.DataFrame):
-
     data_frame.loc[
         data_frame[data_frame.details.str.contains("Anúncio")].index, "company"
     ] = "Anúncio Particular"
