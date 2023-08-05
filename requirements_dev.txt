@@ -1,0 +1,9 @@
+-r requirements.txt
+jupyter
+seaborn
+matplotlib
+pre-commit
+pytest
+pylint
+black
+isort
