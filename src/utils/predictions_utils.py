@@ -12,8 +12,7 @@ from sklearn.compose import ColumnTransformer
 from scipy.sparse._csr import csr_matrix
 
 from src.entities.models import Imovel
-
-from .bucket_utils import download_obj
+from src.utils.bucket_utils import download_obj
 
 load_dotenv()
 
@@ -26,7 +25,6 @@ EXPERIMENT_NAME = os.getenv('EXPERIMENT_NAME', 'portugal-rent-price')
 
 
 def model_prod_id(mlflow_tracking_uri):
-
     client = MlflowClient(mlflow_tracking_uri)
     registered_model = client.search_registered_models(
         filter_string=f"name='{EXPERIMENT_NAME}'"
@@ -45,8 +43,7 @@ def load_model(
 ) -> Tuple[PyFuncModel, ColumnTransformer, str]:
     run_id = model_prod_id(mlflow_tracking_uri)
     logged_model = LOGGED_MODEL.format(aws_s3_bucket=aws_s3_bucket, run_id=run_id)
-    print('>>>>>>>', aws_s3_bucket)
-    print('>>>>>>>', PREPROCESSOR.format(run_id=run_id))
+
     obj = download_obj(aws_s3_bucket, PREPROCESSOR.format(run_id=run_id))
 
     preprocessor = pickle.load(obj)
