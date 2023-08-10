@@ -3,15 +3,20 @@ import logging
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse
 
-from entities.models import Imovel
-from utils.predictions_utils import predict, load_model, save_predictions
+from src.entities.models import Imovel
+from src.utils.predictions_utils import predict, load_model, save_predictions
 
 logging.basicConfig(
     level=logging.INFO, format='FASTAPI_APP - %(asctime)s - %(levelname)s - %(message)s'
 )
 
-model, preprocessor, run_id = load_model()
 
+try:
+    model, preprocessor, run_id = load_model()
+except IndexError as index_error:
+    raise HTTPException(
+        status_code=500, detail='There is no model to load. Check you mlflow register'
+    ) from index_error
 
 app = FastAPI()
 
@@ -25,9 +30,7 @@ async def alive():
 async def predict_endpoint(
     imovel: Imovel, background_tasks: BackgroundTasks
 ) -> JSONResponse:
-
     try:
-
         price_predict, df_data = predict(imovel, model, preprocessor)
 
         df_data['price_predicted'] = round(price_predict[0])  # type: ignore
