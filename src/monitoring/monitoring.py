@@ -1,5 +1,6 @@
 import os
 import logging
+import warnings
 from typing import Tuple
 
 import pandas as pd
@@ -21,6 +22,8 @@ from src.utils.predictions_utils import (
     save_metrics,
     load_predictions
 )
+
+warnings.filterwarnings('ignore')
 
 # fmt: on
 load_dotenv()
