@@ -24,6 +24,4 @@ if __name__ == '__main__':
     df['price_predicted'] = [round(pred) for pred in preds]
     df['model_version'] = run_id
 
-    print(df.head())
-
     save_predictions(df)
