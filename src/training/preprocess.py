@@ -1,6 +1,7 @@
 import os
 import glob
 import logging
+import warnings
 from typing import Tuple
 
 import numpy as np
@@ -12,6 +13,8 @@ from botocore.exceptions import ParamValidationError
 from sklearn.model_selection import train_test_split
 
 from src.utils import bucket_utils
+
+warnings.filterwarnings('ignore')
 
 load_dotenv()
 
