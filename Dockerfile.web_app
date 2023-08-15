@@ -1,0 +1,19 @@
+FROM python:3.9.12-slim-buster
+
+
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc
+
+WORKDIR /mlops_final_project
+
+COPY ./requirements.txt /mlops_final_project/requirements.txt
+COPY ./src/entities /mlops_final_project/src/entities
+COPY ./src/web_app /mlops_final_project/src/web_app
+COPY ./src/__init__.py /mlops_final_project/src/__init__.py
+COPY setup.py /mlops_final_project/setup.py
+
+
+RUN pip install --no-cache-dir -r requirements.txt
+RUN python setup.py install
+
+CMD ["python", "-m", "streamlit", "run", "src/web_app/web_app.py"]

@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+    volumes:
+      - ./config/postgres/sql/CREATE_TABLE_PREDICT.sql:/docker-entrypoint-initdb.d/CREATE_TABLE_PREDICT.sql
+      - ./config/postgres/sql/CREATE_TABLE_METRICS.sql:/docker-entrypoint-initdb.d/CREATE_TABLE_METRICS.sql
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - mlops_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    hostname: pgadmin
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "mlops@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "demo"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - mlops_network
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./config/grafana/grafana_datasources.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./config/grafana/grafana_dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./config/grafana/dashboards:/opt/grafana/dashboards
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - mlops_network
+
+  web_app:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.web_app
+    image: web_app
+    container_name: web_app
+    environment:
+      - API_ENDPOINT=http://mlops_api:8000/predict
+    ports:
+      - "8501:8501"
+    networks:
+      - mlops_network
+
+  api:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: mlops_api
+    environment:
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      - DATABASE_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/postgres
+    container_name: mlops_api
+    ports:
+      - "8000:8000"
+    command: python -m uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+    networks:
+      - mlops_network
+
+networks:
+  mlops_network:
+    driver: bridge
