@@ -173,3 +173,6 @@ postgres/
 *.db
 # models
 *.b
+
+# Reports
+reports/*.html
