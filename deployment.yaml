@@ -1,0 +1,20 @@
+deployments:
+- name: scrapper_flow
+  entrypoint: src/scrapper/scrapper.py:scrapper_run
+  work_pool:
+    name: mlops-pool
+
+- name: preprocess_flow
+  entrypoint: src/training/preprocess.py:preprocessor_flow
+  work_pool:
+    name: mlops-pool
+
+- name: training_flow
+  entrypoint: src/training/train.py:train_flow
+  work_pool:
+    name: mlops-pool
+
+- name: monitoring_flow
+  entrypoint: src/monitoring/monitoring.py:monitoring_flow
+  work_pool:
+    name: mlops-pool
