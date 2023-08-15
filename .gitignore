@@ -160,5 +160,16 @@ cython_debug/
 #.idea/
 
 .vscode/
-/05-monitoring/data
+# volume docker postgres
 postgres/
+
+# terraform
+.terraform
+
+
+# prefect
+.prefect
+# Database
+*.db
+# models
+*.b
