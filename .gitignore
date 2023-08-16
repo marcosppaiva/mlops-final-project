@@ -165,9 +165,9 @@ postgres/
 
 # terraform
 .terraform
-.terraform.lock.hcl
-terraform.tfstate
-terraform.tfstate.backup
+infrastructure/.terraform.lock.hcl
+infrastructure/terraform.tfstate
+infrastructure/terraform.tfstate.backup
 
 # prefect
 .prefect
