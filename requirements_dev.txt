@@ -7,3 +7,4 @@ pytest
 pylint
 black
 isort
+pytest-mock
