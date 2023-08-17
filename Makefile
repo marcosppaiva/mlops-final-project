@@ -68,6 +68,9 @@ terraform-destroy:
 
 terraform-deploy: terraform-init terraform-apply
 
+# Stop project
+destroy: docker-stop terraform-destroy
+
 # Scripts
 web-scrapper:
 	python src/scrapper/scrapper.py

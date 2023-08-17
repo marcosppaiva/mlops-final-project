@@ -91,8 +91,9 @@ mlops_final_project/
 │       └── web_app.py              # Streamlit implementation
 └── tests/                          # Tests directory
     ├── __init__.py                 # Tests initialization file
-    └── model_test.py
-    # Tests for models
+    ├── main_test.py                # Tests for the api
+    ├── scrapper_test.py            # Tests for scrapper
+    └── train_test.py               # Tests for train model
 ```
 
 ## <span style="color: red;">Attention:</span> Some assumptions that must be followed:
@@ -211,6 +212,11 @@ make execute-all-pipeline
 ![web-app](images/web-app.png)
 
 
+## Stop Services
+* To stop the services run the commands:
+```bash
+make destroy
+```
 
 ## Best Practices
 
