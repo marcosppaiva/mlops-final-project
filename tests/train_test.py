@@ -4,7 +4,7 @@ import pytest
 from src.training.train import read_data
 
 
-@pytest.fixture(name="fake_dataframe")
+@pytest.fixture(name='fake_dataframe')
 def setup_fake_dataframe():
     data = {
         'company': ['Anúncio Particular', 'Company A'],
