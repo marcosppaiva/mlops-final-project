@@ -41,7 +41,7 @@ categorical_columns = ['energy_certify', 'property_type', 'district', 'condition
 
 @task
 def load_data(
-    ref_filename: str, current_window_size: int = 100
+    ref_filename: str, current_window_size: int = 10000
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     current_data = load_predictions(current_window_size)
 
@@ -132,7 +132,7 @@ def monitoring_flow():
     num_cols = ['metric', 'rooms', 'bathroom', 'price_predicted']
     cat_cols = ['energy_certify', 'property_type', 'district', 'condition']
 
-    ref_data = current_data[num_cols + cat_cols]
+    current_data = current_data[num_cols + cat_cols]
     ref_data = ref_data[num_cols + cat_cols]
 
     column_mapping = get_column_mapping()
