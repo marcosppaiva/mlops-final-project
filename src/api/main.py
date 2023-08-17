@@ -11,12 +11,16 @@ logging.basicConfig(
 )
 
 
-try:
-    model, preprocessor, run_id = load_model()
-except IndexError as index_error:
-    raise HTTPException(
-        status_code=500, detail='There is no model to load. Check you mlflow register'
-    ) from index_error
+model = None
+preprocessor = None
+run_id = None
+
+
+def lazy_load_model():
+    global model, preprocessor, run_id
+    if model is None:
+        model, preprocessor, run_id = load_model()
+
 
 app = FastAPI()
 
@@ -31,7 +35,8 @@ async def predict_endpoint(
     imovel: Imovel, background_tasks: BackgroundTasks
 ) -> JSONResponse:
     try:
-        price_predict, df_data = predict(imovel, model, preprocessor)
+        lazy_load_model()
+        price_predict, df_data = predict(imovel, model, preprocessor)  # type: ignore
 
         df_data['price_predicted'] = round(price_predict[0])  # type: ignore
         df_data['model_version'] = run_id

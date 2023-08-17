@@ -13,7 +13,8 @@ disable = [
     "import-error",
     "ungrouped-imports",
     "no-name-in-module",
-    "too-many-arguments"
+    "too-many-arguments",
+    "global-statement"
 ]
 
 [tool.pylint.MASTER]
