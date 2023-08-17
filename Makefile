@@ -1,12 +1,5 @@
 .ONESHELL:
 
-# Verifica o sistema operacional para definir os comandos corretos
-ifeq ($(OS),Windows_NT)
-	VENV_ACTIVATE = venv\Scripts\activate
-else
-	VENV_ACTIVATE = venv/bin/activate
-endif
-
 ifeq ($(OS),Windows_NT)
     RENAME_CMD = rename
     RENAME_FLAGS = .env.sample .env
@@ -20,7 +13,7 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
-.PHONY: local-setup venv-create
+.PHONY: venv-create local-setup
 
 # local-setup
 rename_env_file:
@@ -29,23 +22,23 @@ rename_env_file:
 venv-create:
 	python -m venv venv
 
-local-setup: venv-create
-	.\$(VENV_ACTIVATE) && pip install -r requirements_dev.txt && python setup.py install
+local-setup:
+	pip install -r requirements_dev.txt && pip install .
 
 # Prefect
 prefect-login:
-	prefect cloud login -k $(PREFECT_API_KEY)
+	prefect cloud login --key $(PREFECT_API_KEY)
 
-prefect-logout:
+prefect-logout: prefect-login
 	prefect cloud logout
 
-prefect-worker-create:
+prefect-worker-create: prefect-login
 	prefect work-pool create mlops-pool -t process
 
-prefect-worker-start:
+prefect-worker-start: prefect-login
 	prefect worker start -p mlops-pool
 
-prefect-deploy:
+prefect-deploy: prefect-login
 	prefect deploy --all
 
 prefect-cloud: prefect-login prefect-deploy prefect-worker-start
@@ -76,17 +69,17 @@ terraform-destroy:
 terraform-deploy: terraform-init terraform-apply
 
 # Scripts
-web-scrapper: activate-venv
+web-scrapper:
 	python src/scrapper/scrapper.py
 
-train-model: activate-venv
+train-model:
 	python src/training/preprocess.py
 	python src/training/train.py
 
-monitoring-model: activate-venv
+monitoring-model:
 	python src/monitoring/monitoring.py
 
-generate-predictions: activate-venv
+generate-predictions:
 	python src/generate_predicts.py
 
 execute-all-pipeline: web-scrapper train-model generate-predictions monitoring-model
