@@ -39,7 +39,7 @@ prefect-worker-start: prefect-login
 	prefect worker start -p mlops-pool
 
 prefect-deploy: prefect-login
-	prefect deploy --all
+	prefect project init && prefect deploy --all
 
 prefect-cloud: prefect-login prefect-deploy prefect-worker-start
 
