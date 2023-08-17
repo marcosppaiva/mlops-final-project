@@ -8,7 +8,7 @@ Finding suitable rental properties in Portugal can be a time-consuming and chall
 To address these challenges, the Predict Rent Portugal aims to automate the data collection process from a specific house rental website. By leveraging web scraping techniques and machine learning algorithms, the project seeks to provide accurate and up-to-date rental price estimations, empowering users to make informed decisions about rental properties.
 
 ## Project Overview
-The Predict Rent Portugal automates the process of collecting rental data from a popular house rental website in Portugal. By scraping the website, relevant information such as property details, location, and rental prices are collected and stored for further analysis. The project utilizes technologies such as XGBoost, Prefect, Evidently AI, Mlflow, FastAPI, Terraform and Docker to apply best practices in MLOps and ensure efficient data collection, modeling, monitoring, and real-time predictions.
+The Predict Rent Portugal automates the process of collecting rental data from a popular house rental website(https://www.imovirtual.com/) in Portugal. By scraping the website, relevant information such as property details, location, and rental prices are collected and stored for further analysis. The project utilizes technologies such as XGBoost, Prefect, Evidently AI, Mlflow, FastAPI, Terraform and Docker to apply best practices in MLOps and ensure efficient data collection, modeling, monitoring, and real-time predictions.
 
 ## Technologies Used
 The project utilizes the following technologies:
@@ -116,6 +116,7 @@ If necessary, follow the download links below.
 * In your AWS account create a key_pair, or if you already have one, put the key name in the file, according to the image bellow (replace the value of key_name using you key_pair name):
 
 path: **infrastructure/vars**
+
 ![terraform-config](images/key_name_terraform.png)
 
 
