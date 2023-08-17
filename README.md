@@ -156,7 +156,7 @@ path: **infrastructure/vars**
     # Make sure you set the access key in the .env file
     make prefect-cloud
     ```
-* After executing this command the terminal is blocked since we have activated a worker-pool. Open another terminal to continue
+* After executing this command the terminal is blocked since we have activated a worker-pool. Open another terminal to continue. **Remember to enable virtualenv in new terminal** 
 
 5. Start mlflow on AWS Cloud
     ```bash
