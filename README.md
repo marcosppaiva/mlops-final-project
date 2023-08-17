@@ -113,30 +113,32 @@ If necessary, follow the download links below.
 
 ## How to use
 
-* In your AWS account create a key_pair, or if you already have one, put the key name in the file, according to the image bellow (replace the value of key_name using you key_pair name):
+### 1. Clone the repository
+* Clone the repository that contains the project
+    ```bash
+    git clone https://github.com/marcosppaiva/mlops-final-project.git
+    ```
+### 2. Rename .env.sample file
+* This command will rename the file from .env.sample to .env.
+    ```bash
+    make rename_env_file
+    ```
+### 3. Configure files
+* open the .env file and add your access key to the prefect cloud. If necessary, check the [prefect-documentation.](https://docs.prefect.io/2.11.3/cloud/users/api-keys/)
+
+    ![Prefect API Key](images/env-prefect-key.png)
+
+* Also in the .env file configure the aws-key (the same key that you use to configure the aws-cli)
+
+    ![aws-key](images/aws-access-key.png)
+
+* Now in your AWS account create a key_pair, or if you already have one, put the key name in the file, according to the image bellow (replace the value of key_name using you key_pair name):
 
 path: **infrastructure/vars**
 
 ![terraform-config](images/key_name_terraform.png)
 
-
-### To use this project, follow these steps:
-
-1. Clone the repository
-* Clone the repository that contains the project
-    ```bash
-    git clone https://github.com/marcosppaiva/mlops-final-project.git
-    ```
-2. Rename .env.sample file
-* This command will rename the file from .env.sample to .env.
-    ```bash
-    make rename_env_file
-    ```
-* After executing the command, open the .env file and add your access key to the prefect cloud. If necessary, check the [prefect-documentation.](https://docs.prefect.io/2.11.3/cloud/users/api-keys/)
-
-    ![Prefect API Key](images/env-prefect-key.png)
-
-3. Create a virtual env and install requirements
+### 4. Create a virtual env and install requirements
 
 * This command will create a virtualenv and after you need to activate your env and install the necessary dependencies for the project
     ```bash
@@ -150,15 +152,15 @@ path: **infrastructure/vars**
     # Install dependencies
     make local-setup
     ```
-4. Deploy into Prefect Cloud
+### 5. Deploy into Prefect Cloud
 * This command will deploy your flows into Prefect Cloud and creat a worker-pool
     ```bash
     # Make sure you set the access key in the .env file
     make prefect-cloud
     ```
-* After executing this command the terminal is blocked since we have activated a worker-pool. Open another terminal to continue. **Remember to enable virtualenv in new terminal** 
+* After executing this command the terminal is blocked since we have activated a worker-pool. Open another terminal to continue. **Remember to enable virtualenv in new terminal**
 
-5. Start mlflow on AWS Cloud
+### 6. Start mlflow on AWS Cloud
     ```bash
     make terraform-deploy
     ```
@@ -172,7 +174,7 @@ path: **infrastructure/vars**
 
     ![env-mlflow0tracking-uri](images/env-ip-mlflow.png)
 
-6. Run Docker
+### 7. Run Docker
     ```bash
     make docker-run
     ```
@@ -234,3 +236,7 @@ make destroy
 - Implements CI/CD
 - improve model performance
 - deploy all project into cloud
+
+
+## Contacts
+linkedin: https://www.linkedin.com/in/marcospaulop/
